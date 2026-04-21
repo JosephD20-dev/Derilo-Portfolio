@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio - JosephD20</title>
+    
     <style> 
     *{
     margin: 0;
@@ -111,7 +114,7 @@ body {
 .profile-pic {
     width: 200px;
     height: 200px;
-    border-radius: 50%;
+    border-radius: 0;
     border: 5px solid white;
     margin-bottom: 2rem;
     object-fit: cover;
@@ -458,6 +461,103 @@ h2 {
     font-weight: 600;
 }
 
+.upload-success {
+    background: #d4edda;
+    color: #155724;
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid #c3e6cb;
+    margin-bottom: 1rem;
+    display: none;
+    font-weight: 600;
+    text-align: center;
+}
+
+.upload-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid #f5c6cb;
+    margin-bottom: 1rem;
+    display: none;
+    font-weight: 600;
+    text-align: center;
+}
+
+.photo-preview {
+    width: 200px;
+    height: 200px;
+    border-radius: 0;
+    object-fit: cover;
+    border: 5px solid #667eea;
+    margin: 1rem auto;
+    display: none;
+}
+
+.preview-container {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.uploaded-photos-section,
+.uploaded-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e0e0e0;
+}
+
+.uploaded-photos-grid,
+.uploaded-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.uploaded-photo-card,
+.uploaded-item-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    padding: 1rem;
+}
+
+.uploaded-photo-card:hover,
+.uploaded-item-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.uploaded-photo-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+}
+
+.uploaded-photo-info,
+.uploaded-item-info {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.uploaded-item-info p {
+    margin-bottom: 0.5rem;
+}
+
+.uploaded-item-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
 .footer {
     background: #333;
     color: white;
@@ -468,6 +568,27 @@ h2 {
 
 .footer p {
     margin: 0.5rem 0;
+}
+
+.page-section {
+    display: none;
+}
+
+.page-section.active {
+    display: block;
+}
+
+.btn-delete {
+    background: #dc3545;
+    border: none;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background: #c82333;
 }
 
 @media (max-width: 768px) {
@@ -507,6 +628,11 @@ h2 {
         margin-left: 0;
         margin-top: 1rem;
     }
+
+    .uploaded-photos-grid,
+    .uploaded-items-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 500px) {
@@ -538,10 +664,6 @@ h2 {
     }
 }
     </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio - JosephD20</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Navigation Menu -->
@@ -549,86 +671,638 @@ h2 {
         <div class="nav-container">
             <div class="logo">Derilo BSCS1C Portfolio</div>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link active">Home</a></li>
-                <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                <li><a href="#home" class="nav-link active" onclick="showPage('home')">Home</a></li>
                 <li class="dropdown">
                     <a href="#" class="nav-link">Uploads ▼</a>
                     <div class="dropdown-content">
-                        <a href="quiz-upload.html">Quiz Upload</a>
-                        <a href="lab-upload.html">Lab Work Upload</a>
-                        <a href="exam-upload.html">Major Exam Upload</a>
+                        <a href="#photo-upload" onclick="showPage('photo-upload')">Photo Upload</a>
+                        <a href="#quiz-upload" onclick="showPage('quiz-upload')">Quiz Upload</a>
+                        <a href="#lab-upload" onclick="showPage('lab-upload')">Lab Work Upload</a>
+                        <a href="#exam-upload" onclick="showPage('exam-upload')">Major Exam Upload</a>
                     </div>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <section class="hero">
-        <div class="hero-content">
-            <img src="sakamoto.jpeg" alt="Profile Picture" class="profile-pic">
-            <h1> Joseph Abraham B. Derilo </h1>
-            <p class="tagline">Student Portfolio </p>
-        </div>
-    </section>
+    <!-- HOME PAGE -->
+    <div id="home" class="page-section active">
+        <section class="hero">
+            <div class="hero-content">
+                <img id="mainProfilePic" src="c:\Users\Joseph\Downloads\Derilo.jpg.jpg" alt="Profile Picture" class="profile-pic">
+                <h1> Joseph Abraham B. Derilo </h1>
+                <p class="tagline">Student Portfolio</p>
+            </div>
+        </section>
 
-    <section class="about">
-        <h2>About Me</h2>
-        <div class="about-content">
-            <p>
-                Hi my name is Joseph Abraham B. Derilo from BSCS-1C, I learning some programming or development
-                to my course computer science, and welcome to my portfolio.
-            </p>
-        </div>
-    </section>
+        <section class="about">
+            <h2>About Me</h2>
+            <div class="about-content">
+                <p>
+                    Hi my name is Joseph Abraham B. Derilo from BSCS-1C, I learning some programming or development
+                    to my course computer science, and welcome to my portfolio.
+                </p>
+            </div>
+        </section>
 
-    <section class="skills">
-        <h2>Skills</h2>
-        <div class="skills-grid">
-            <div class="skill-card">
-                <h3>Web Development</h3>
-                <p>HTML, CSS, JavaScript</p>
+        <section class="skills">
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>Web Development</h3>
+                    <p>HTML, CSS, JavaScript</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Programming</h3>
+                    <p>C++ and Java</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Learning</h3>
+                    <p>Adaptive & Development</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Others</h3>
+                    <p>Clear Documentation & Presentation</p>
+                </div>
             </div>
-            <div class="skill-card">
-                <h3>Programming</h3>
-                <p>C++ and Java</p>
-            </div>
-            <div class="skill-card">
-                <h3>Learning</h3>
-                <p>Adaptive & Development</p>
-            </div>
-            <div class="skill-card">
-                <h3>Others</h3>
-                <p>Clear Documentation & Presentation</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="projects">
-        <h2>Recent Work</h2>
-        <div class="project-grid">
-            <div class="project-card">
-                <h3>Quiz Performance</h3>
-                <p>Track and upload your quiz results with supporting documents.</p>
-                <a href="quiz-upload.html" class="btn">View Quizzes</a>
+        <section class="projects">
+            <h2>Recent Work</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3>Update Profile Photo</h3>
+                    <p>Upload or change your profile picture.</p>
+                    <a href="#photo-upload" class="btn" onclick="showPage('photo-upload')">Upload Photo</a>
+                </div>
+                <div class="project-card">
+                    <h3>Quiz Performance</h3>
+                    <p>Track and upload your quiz results with supporting documents.</p>
+                    <a href="#quiz-upload" class="btn" onclick="showPage('quiz-upload')">View Quizzes</a>
+                </div>
+                <div class="project-card">
+                    <h3>Lab Work</h3>
+                    <p>Organize and manage all laboratory assignments and experiments.</p>
+                    <a href="#lab-upload" class="btn" onclick="showPage('lab-upload')">View Labs</a>
+                </div>
+                <div class="project-card">
+                    <h3>Exam Results</h3>
+                    <p>Keep records of your major exams and achievement certificates.</p>
+                    <a href="#exam-upload" class="btn" onclick="showPage('exam-upload')">View Exams</a>
+                </div>
             </div>
-            <div class="project-card">
-                <h3>Lab Work</h3>
-                <p>Organize and manage all laboratory assignments and experiments.</p>
-                <a href="lab-upload.html" class="btn">View Labs</a>
+        </section>
+    </div>
+
+    <!-- PHOTO UPLOAD PAGE -->
+    <div id="photo-upload" class="page-section">
+        <section class="upload-section">
+            <div class="upload-container">
+                <h1>Profile Photo Upload</h1>
+                <p class="section-subtitle">Upload your portfolio photos</p>
+
+                <div class="upload-form">
+                    <div id="photoSuccessMessage" class="upload-success"></div>
+                    <div id="photoErrorMessage" class="upload-error"></div>
+
+                    <div class="preview-container">
+                        <img id="photoPreview" class="photo-preview" alt="Photo Preview">
+                        <p id="photoPreviewText" style="color: #999;">Preview will appear here</p>
+                    </div>
+
+                    <form id="photoForm" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="photoInput">Select Photo:</label>
+                            <div class="file-upload-box" id="fileUploadBox">
+                                <input type="file" id="photoInput" name="photo" accept="image/*" required>
+                                <p>📸 Click to select or drag and drop</p>
+                                <p class="file-hint">Supported formats: JPG, PNG, GIF (Max 5MB)</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="photoDescription">Photo Description (Optional):</label>
+                            <textarea 
+                                id="photoDescription" 
+                                name="description" 
+                                placeholder="Add a description for your photo..."
+                                rows="4"
+                            ></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-submit">Upload Photo</button>
+                        <a href="#home" class="btn btn-secondary" style="text-align: center; width: auto;" onclick="showPage('home')">Cancel</a>
+                    </form>
+
+                    <!-- Uploaded Photos Display -->
+                    <div class="uploaded-photos-section">
+                        <h3 style="color: #333; margin-bottom: 1rem;">Your Uploaded Photos</h3>
+                        <div id="uploadedPhotosContainer">
+                            <p class="no-data">No photos uploaded yet</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="project-card">
-                <h3>Exam Results</h3>
-                <p>Keep records of your major exams and achievement certificates.</p>
-                <a href="exam-upload.html" class="btn">View Exams</a>
+        </section>
+    </div>
+
+    <!-- QUIZ UPLOAD PAGE -->
+    <div id="quiz-upload" class="page-section">
+        <section class="upload-section">
+            <div class="upload-container">
+                <h1>Quiz Upload</h1>
+                <p class="section-subtitle">Upload your quiz results and documents</p>
+                <div class="upload-form">
+                    <div id="quizSuccessMessage" class="upload-success"></div>
+                    <div id="quizErrorMessage" class="upload-error"></div>
+
+                    <form id="quizForm">
+                        <div class="form-group">
+                            <label for="quizTitle">Quiz Title:</label>
+                            <input type="text" id="quizTitle" placeholder="Enter quiz title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="quizScore">Score:</label>
+                            <input type="number" id="quizScore" placeholder="Enter your score" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="quizDate">Date:</label>
+                            <input type="date" id="quizDate" required>
+                        </div>
+                        <button type="submit" class="btn btn-submit">Upload Quiz</button>
+                        <a href="#home" class="btn btn-secondary" style="text-align: center; width: auto;">Cancel</a>
+                    </form>
+
+                    <!-- Uploaded Quiz Display -->
+                    <div class="uploaded-section">
+                        <h3 style="color: #333; margin-bottom: 1rem;">Your Quiz Records</h3>
+                        <div id="uploadedQuizContainer">
+                            <p class="no-data">No quiz records yet</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
+
+    <!-- LAB UPLOAD PAGE -->
+    <div id="lab-upload" class="page-section">
+        <section class="upload-section">
+            <div class="upload-container">
+                <h1>Lab Work Upload</h1>
+                <p class="section-subtitle">Upload your laboratory assignments</p>
+                <div class="upload-form">
+                    <div id="labSuccessMessage" class="upload-success"></div>
+                    <div id="labErrorMessage" class="upload-error"></div>
+
+                    <form id="labForm">
+                        <div class="form-group">
+                            <label for="labTitle">Lab Title:</label>
+                            <input type="text" id="labTitle" placeholder="Enter lab title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="labDescription">Description:</label>
+                            <textarea id="labDescription" placeholder="Describe your lab work" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="labGrade">Grade/Score:</label>
+                            <input type="text" id="labGrade" placeholder="Enter grade or score" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="labDate">Date:</label>
+                            <input type="date" id="labDate" required>
+                        </div>
+                        <button type="submit" class="btn btn-submit">Upload Lab Work</button>
+                        <a href="#home" class="btn btn-secondary" style="text-align: center; width: auto;">Cancel</a>
+                    </form>
+
+                    <!-- Uploaded Lab Display -->
+                    <div class="uploaded-section">
+                        <h3 style="color: #333; margin-bottom: 1rem;">Your Lab Records</h3>
+                        <div id="uploadedLabContainer">
+                            <p class="no-data">No lab records yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- EXAM UPLOAD PAGE -->
+    <div id="exam-upload" class="page-section">
+        <section class="upload-section">
+            <div class="upload-container">
+                <h1>Major Exam Upload</h1>
+                <p class="section-subtitle">Upload your exam results and certificates</p>
+                <div class="upload-form">
+                    <div id="examSuccessMessage" class="upload-success"></div>
+                    <div id="examErrorMessage" class="upload-error"></div>
+
+                    <form id="examForm">
+                        <div class="form-group">
+                            <label for="examTitle">Exam Title:</label>
+                            <input type="text" id="examTitle" placeholder="Enter exam title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="examScore">Score:</label>
+                            <input type="number" id="examScore" placeholder="Enter your score" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="examRemarks">Remarks/Comments:</label>
+                            <textarea id="examRemarks" placeholder="Add any remarks about the exam" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="examDate">Date:</label>
+                            <input type="date" id="examDate" required>
+                        </div>
+                        <button type="submit" class="btn btn-submit">Upload Exam</button>
+                        <a href="#home" class="btn btn-secondary" style="text-align: center; width: auto;">Cancel</a>
+                    </form>
+
+                    <!-- Uploaded Exam Display -->
+                    <div class="uploaded-section">
+                        <h3 style="color: #333; margin-bottom: 1rem;">Your Exam Records</h3>
+                        <div id="uploadedExamContainer">
+                            <p class="no-data">No exam records yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 
     <footer class="footer">
         <p>&copy; 2026 My Portfolio. All rights reserved.</p>
         <p>Built with HTML, CSS & JavaScript</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // Page Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            const selectedPage = document.getElementById(pageId);
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+            }
+            
+            // Update nav links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // ==================== PHOTO UPLOAD ====================
+        const photoForm = document.getElementById('photoForm');
+        const photoInput = document.getElementById('photoInput');
+        const photoPreview = document.getElementById('photoPreview');
+        const photoPreviewText = document.getElementById('photoPreviewText');
+        const photoSuccessMessage = document.getElementById('photoSuccessMessage');
+        const photoErrorMessage = document.getElementById('photoErrorMessage');
+        const fileUploadBox = document.getElementById('fileUploadBox');
+
+        // Preview image when selected
+        photoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            
+            if (file) {
+                if (!file.type.startsWith('image/')) {
+                    showPhotoError('Please select a valid image file');
+                    photoInput.value = '';
+                    return;
+                }
+
+                if (file.size > 5 * 1024 * 1024) {
+                    showPhotoError('File size must be less than 5MB');
+                    photoInput.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    photoPreview.src = event.target.result;
+                    photoPreview.style.display = 'block';
+                    photoPreviewText.style.display = 'none';
+                    clearPhotoMessages();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Drag and drop
+        fileUploadBox.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            fileUploadBox.style.backgroundColor = '#f0f4ff';
+            fileUploadBox.style.borderColor = '#667eea';
+        });
+
+        fileUploadBox.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            fileUploadBox.style.backgroundColor = 'white';
+            fileUploadBox.style.borderColor = '#000000';
+        });
+
+        fileUploadBox.addEventListener('drop', function(e) {
+            e.preventDefault();
+            fileUploadBox.style.backgroundColor = 'white';
+            fileUploadBox.style.borderColor = '#000000';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                photoInput.files = files;
+                photoInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
+
+        fileUploadBox.addEventListener('click', function() {
+            photoInput.click();
+        });
+
+        // Photo form submission
+        photoForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const file = photoInput.files[0];
+            if (!file) {
+                showPhotoError('Please select a photo');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                let uploadedPhotos = JSON.parse(localStorage.getItem('uploadedPhotos')) || [];
+                
+                const newPhoto = {
+                    id: Date.now(),
+                    data: event.target.result,
+                    description: document.getElementById('photoDescription').value,
+                    uploadDate: new Date().toLocaleDateString()
+                };
+                
+                uploadedPhotos.push(newPhoto);
+                localStorage.setItem('uploadedPhotos', JSON.stringify(uploadedPhotos));
+                
+                showPhotoSuccess('Photo uploaded successfully!');
+                displayUploadedPhotos();
+                photoForm.reset();
+                photoPreview.style.display = 'none';
+                photoPreviewText.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function displayUploadedPhotos() {
+            const uploadedPhotos = JSON.parse(localStorage.getItem('uploadedPhotos')) || [];
+            const container = document.getElementById('uploadedPhotosContainer');
+            
+            if (uploadedPhotos.length === 0) {
+                container.innerHTML = '<p class="no-data">No photos uploaded yet</p>';
+                return;
+            }
+            
+            let html = '<div class="uploaded-photos-grid">';
+            uploadedPhotos.forEach(photo => {
+                html += `
+                    <div class="uploaded-photo-card">
+                        <img src="${photo.data}" alt="Uploaded photo">
+                        <div class="uploaded-photo-info">
+                            <p><strong>${photo.uploadDate}</strong></p>
+                            <p>${photo.description ? photo.description.substring(0, 20) + '...' : 'No description'}</p>
+                            <button type="button" class="btn btn-delete" onclick="deletePhoto(${photo.id})">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function deletePhoto(photoId) {
+            let uploadedPhotos = JSON.parse(localStorage.getItem('uploadedPhotos')) || [];
+            uploadedPhotos = uploadedPhotos.filter(photo => photo.id !== photoId);
+            localStorage.setItem('uploadedPhotos', JSON.stringify(uploadedPhotos));
+            displayUploadedPhotos();
+        }
+
+        function showPhotoSuccess(message) {
+            photoSuccessMessage.textContent = message;
+            photoSuccessMessage.style.display = 'block';
+            photoErrorMessage.style.display = 'none';
+        }
+
+        function showPhotoError(message) {
+            photoErrorMessage.textContent = message;
+            photoErrorMessage.style.display = 'block';
+            photoSuccessMessage.style.display = 'none';
+        }
+
+        function clearPhotoMessages() {
+            photoSuccessMessage.style.display = 'none';
+            photoErrorMessage.style.display = 'none';
+        }
+
+        // ==================== QUIZ UPLOAD ====================
+        const quizForm = document.getElementById('quizForm');
+
+        quizForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const quizData = {
+                id: Date.now(),
+                title: document.getElementById('quizTitle').value,
+                score: document.getElementById('quizScore').value,
+                date: document.getElementById('quizDate').value
+            };
+
+            let quizRecords = JSON.parse(localStorage.getItem('quizRecords')) || [];
+            quizRecords.push(quizData);
+            localStorage.setItem('quizRecords', JSON.stringify(quizRecords));
+
+            showQuizSuccess('Quiz record added successfully!');
+            displayQuizRecords();
+            quizForm.reset();
+        });
+
+        function displayQuizRecords() {
+            const quizRecords = JSON.parse(localStorage.getItem('quizRecords')) || [];
+            const container = document.getElementById('uploadedQuizContainer');
+
+            if (quizRecords.length === 0) {
+                container.innerHTML = '<p class="no-data">No quiz records yet</p>';
+                return;
+            }
+
+            let html = '<div class="uploaded-items-grid">';
+            quizRecords.forEach(quiz => {
+                html += `
+                    <div class="uploaded-item-card">
+                        <div class="uploaded-item-title">${quiz.title}</div>
+                        <div class="uploaded-item-info">
+                            <p><strong>Score:</strong> ${quiz.score}</p>
+                            <p><strong>Date:</strong> ${new Date(quiz.date).toLocaleDateString()}</p>
+                            <button type="button" class="btn btn-delete" onclick="deleteQuiz(${quiz.id})">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function deleteQuiz(quizId) {
+            let quizRecords = JSON.parse(localStorage.getItem('quizRecords')) || [];
+            quizRecords = quizRecords.filter(quiz => quiz.id !== quizId);
+            localStorage.setItem('quizRecords', JSON.stringify(quizRecords));
+            displayQuizRecords();
+        }
+
+        function showQuizSuccess(message) {
+            document.getElementById('quizSuccessMessage').textContent = message;
+            document.getElementById('quizSuccessMessage').style.display = 'block';
+            document.getElementById('quizErrorMessage').style.display = 'none';
+        }
+
+        // ==================== LAB UPLOAD ====================
+        const labForm = document.getElementById('labForm');
+
+        labForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const labData = {
+                id: Date.now(),
+                title: document.getElementById('labTitle').value,
+                description: document.getElementById('labDescription').value,
+                grade: document.getElementById('labGrade').value,
+                date: document.getElementById('labDate').value
+            };
+
+            let labRecords = JSON.parse(localStorage.getItem('labRecords')) || [];
+            labRecords.push(labData);
+            localStorage.setItem('labRecords', JSON.stringify(labRecords));
+
+            showLabSuccess('Lab record added successfully!');
+            displayLabRecords();
+            labForm.reset();
+        });
+
+        function displayLabRecords() {
+            const labRecords = JSON.parse(localStorage.getItem('labRecords')) || [];
+            const container = document.getElementById('uploadedLabContainer');
+
+            if (labRecords.length === 0) {
+                container.innerHTML = '<p class="no-data">No lab records yet</p>';
+                return;
+            }
+
+            let html = '<div class="uploaded-items-grid">';
+            labRecords.forEach(lab => {
+                html += `
+                    <div class="uploaded-item-card">
+                        <div class="uploaded-item-title">${lab.title}</div>
+                        <div class="uploaded-item-info">
+                            <p><strong>Grade:</strong> ${lab.grade}</p>
+                            <p><strong>Date:</strong> ${new Date(lab.date).toLocaleDateString()}</p>
+                            <p><strong>Description:</strong> ${lab.description ? lab.description.substring(0, 30) + '...' : 'None'}</p>
+                            <button type="button" class="btn btn-delete" onclick="deleteLab(${lab.id})">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function deleteLab(labId) {
+            let labRecords = JSON.parse(localStorage.getItem('labRecords')) || [];
+            labRecords = labRecords.filter(lab => lab.id !== labId);
+            localStorage.setItem('labRecords', JSON.stringify(labRecords));
+            displayLabRecords();
+        }
+
+        function showLabSuccess(message) {
+            document.getElementById('labSuccessMessage').textContent = message;
+            document.getElementById('labSuccessMessage').style.display = 'block';
+            document.getElementById('labErrorMessage').style.display = 'none';
+        }
+
+        // ==================== EXAM UPLOAD ====================
+        const examForm = document.getElementById('examForm');
+
+        examForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const examData = {
+                id: Date.now(),
+                title: document.getElementById('examTitle').value,
+                score: document.getElementById('examScore').value,
+                remarks: document.getElementById('examRemarks').value,
+                date: document.getElementById('examDate').value
+            };
+
+            let examRecords = JSON.parse(localStorage.getItem('examRecords')) || [];
+            examRecords.push(examData);
+            localStorage.setItem('examRecords', JSON.stringify(examRecords));
+
+            showExamSuccess('Exam record added successfully!');
+            displayExamRecords();
+            examForm.reset();
+        });
+
+        function displayExamRecords() {
+            const examRecords = JSON.parse(localStorage.getItem('examRecords')) || [];
+            const container = document.getElementById('uploadedExamContainer');
+
+            if (examRecords.length === 0) {
+                container.innerHTML = '<p class="no-data">No exam records yet</p>';
+                return;
+            }
+
+            let html = '<div class="uploaded-items-grid">';
+            examRecords.forEach(exam => {
+                html += `
+                    <div class="uploaded-item-card">
+                        <div class="uploaded-item-title">${exam.title}</div>
+                        <div class="uploaded-item-info">
+                            <p><strong>Score:</strong> ${exam.score}</p>
+                            <p><strong>Date:</strong> ${new Date(exam.date).toLocaleDateString()}</p>
+                            <p><strong>Remarks:</strong> ${exam.remarks ? exam.remarks.substring(0, 30) + '...' : 'None'}</p>
+                            <button type="button" class="btn btn-delete" onclick="deleteExam(${exam.id})">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function deleteExam(examId) {
+            let examRecords = JSON.parse(localStorage.getItem('examRecords')) || [];
+            examRecords = examRecords.filter(exam => exam.id !== examId);
+            localStorage.setItem('examRecords', JSON.stringify(examRecords));
+            displayExamRecords();
+        }
+
+        function showExamSuccess(message) {
+            document.getElementById('examSuccessMessage').textContent = message;
+            document.getElementById('examSuccessMessage').style.display = 'block';
+            document.getElementById('examErrorMessage').style.display = 'none';
+        }
+
+        // Load all records on page load
+        window.addEventListener('load', function() {
+            displayUploadedPhotos();
+            displayQuizRecords();
+            displayLabRecords();
+            displayExamRecords();
+        });
+    </script>
 </body>
 </html>
